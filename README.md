@@ -4,8 +4,6 @@ Overview
 
 This Terraform project provides a reusable module to manage two passwords: an active and a backup password. It supports rotating only the backup password and optionally swapping the active and backup passwords.
 
-Folder Structure - 
-
 Terraform_random_password_generation/
 │
 ├── _modules/
