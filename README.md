@@ -4,23 +4,23 @@ Overview
 
 This Terraform project provides a reusable module to manage two passwords: an active and a backup password. It supports rotating only the backup password and optionally swapping the active and backup passwords.
 
-Terraform_random_password_generation/
-│
-├── _modules/
-│   └── password_generation/
-│       ├── password.tf
-│       ├── local.tf
-│       ├── vars.tf
-│       └── outputs.tf
-│
-├── main.tf
-├── vars.tf
-├── outputs.tf
-├── terraform.tfvars
-├── README.md
-│
-└── guard/
-└── precheck.go
+Folder Structure
+	•	Terraform_random_password_generation/
+		•	_modules/
+			•	password_generation/
+				•	password.tf
+				•	local.tf
+				•	vars.tf
+				•	outputs.tf		
+	
+	•	main.tf
+	•	vars.tf
+	•	outputs.tf
+	•	terraform.tfvars
+	•	README.md
+	
+	•	guard/
+		•	precheck.go
 
 Features
 	•	Two Passwords: Generates one active and one backup password.
