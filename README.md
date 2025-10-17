@@ -7,7 +7,7 @@ This Terraform project provides a reusable module to manage two passwords: an ac
 Folder Structure - 
 
 Terraform_random_password_generation/
-
+│
 ├── _modules/
 │   └── password_generation/
 │       ├── password.tf
@@ -18,9 +18,8 @@ Terraform_random_password_generation/
 ├── main.tf
 ├── vars.tf
 ├── outputs.tf
-├── README.md
 ├── terraform.tfvars
-
+├── README.md
 │
 └── guard/
 └── precheck.go
