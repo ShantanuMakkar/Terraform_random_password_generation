@@ -1,64 +1,73 @@
-# Terraform_random_password_generation
+Terraform Random Password Generation :
 
-Overview
+This project demonstrates how to use Terraform to generate secure random passwords and manage them efficiently using modular structure and conditional deployment techniques.
 
-This Terraform project provides a reusable module to manage two passwords: an active and a backup password. It supports rotating only the backup password and optionally swapping the active and backup passwords.
+The setup includes a Python-based precheck script that validates the environment before deployment, ensuring idempotency and safe provisioning.
 
-Folder Structure
-	•	Terraform_random_password_generation
-		•	_modules
-			•	password_generation
-				•	password.tf
-				•	local.tf
-				•	vars.tf
-				•	outputs.tf		
-	•	main.tf
-	•	vars.tf
-	•	outputs.tf
-	•	terraform.tfvars
-	•	README.md
-	•	guard
-		•	precheck.go
 
-Features
-	•	Two Passwords: Generates one active and one backup password.
-	•	Rotation: You can rotate the backup password independently.
-	•	Swap: Swap active and backup passwords when needed.
-	•	Idempotent: Terraform does not recreate passwords unless explicitly told to.
+Folder Structure -
 
-How It Works
-	1.	When you first run terraform apply, two passwords (active and backup) are generated.
-	2.	To rotate the backup password, set rotate_backup = true and apply again.
-	3.	To swap passwords, set swap_passwords = true and apply again.
-	4.	The state will remain stable across runs unless you change these flags.
+	1.	Terraform_random_password_generation/
 
-Usage Example
+	2.	_modules/
+	•	password_generation/
+		•	password.tf
+		•	local.tf
+		•	vars.tf
+		•	outputs.tf
 
-module “password_generation” {
-source          = “./_modules/password_generation”
-password_length = 20
-include_special = true
-rotate_backup   = false
-swap_passwords  = false
-}
+	3.	main.tf
+	4.	vars.tf
+	5.	outputs.tf
+	6.	terraform.tfvars
 
-output “active_password” {
-value     = module.password_generation.active_password
-sensitive = true
-}
+	7.	check.py
+	8.	run.sh
 
-output “backup_password” {
-value     = module.password_generation.backup_password
-sensitive = true
-}
+	9.	README.md
 
-Apply Steps
-	1.	Initialize Terraform: terraform init
-	2.	Apply the configuration: terraform apply -auto-approve
-	3.	To rotate the backup password: terraform apply -var=“rotate_backup=true” -auto-approve
-	4.	To swap passwords: terraform apply -var=“swap_passwords=true” -auto-approve
 
-Notes
-	•	The module is substrate agnostic and works with any Terraform backend.
-	•	It achieves the desired state within a maximum of two terraform apply runs.
-	•	Backup password rotation and password swapping are mutually exclusive operations (handled separately).
+Project Overview - 
+	•	The Terraform configuration is organized into a reusable module that handles password generation.
+	•	The password_generation module defines the logic to create random passwords.
+	•	The root main.tf calls this module and controls execution flow.
+	•	A Python precheck script (check.py) runs before Terraform commands to validate that required variables and files exist.
+	•	This ensures idempotency — re-running Terraform will not regenerate passwords unless the inputs change.
+
+
+Conditional Deployment - 
+	•	Conditional deployment is used to control when and how resources are created based on variable conditions.
+	•	For example, Terraform only generates a password if a flag such as create_password = true is set.
+	•	This approach ensures that repeated runs do not modify existing resources unless explicitly required.
+
+
+How to Run - 
+
+	1.	Run the precheck to validate setup:
+	•	bash run.sh
+	
+	2. Then run.sh will run the check.py script, which will read the terraform.tfvars file to validate the if the two variables are true at the same time.
+
+	3. If the check.py succeeds, it will run the terraform commands plan & apply as a part of the bash script4
+
+	4.	If you want to skip the bonus validation part, directly perform the Terraform commands as below:
+	•	terraform init
+	•	terraform plan
+	•	terraform apply
+
+
+Key Features - 
+	•	Modular design for password generation
+	•	Python-based precheck guard for validation
+	•	Idempotent execution — no unintended password regeneration
+	•	Conditional deployment logic for flexibility
+	•	Real-world alignment with production Terraform practices
+
+
+Real-World Implementation Experience (In my current project) -
+
+In my current project, I have extensively used conditional deployment across almost all AWS resources in Terraform.
+This ensures efficient and controlled deployments — for instance, creating RDS instances, S3 buckets, or IAM roles only when specific feature flags are enabled.
+
+I also implemented random password generation for RDS databases using the same concept as this module.
+The generated passwords were securely stored directly in AWS Secrets Manager using a key pair, ensuring both security and automation without exposing credentials in plain text.
