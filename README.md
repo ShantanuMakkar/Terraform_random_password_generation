@@ -3,7 +3,7 @@ NOTE - Please open the README file in code mode (and not in preview mode) in Git
 
 Terraform Random Password Generation Module : 
 
-This Terraform module generates two random passwords: active and backup. It supports:
+This Terraform module generates two random passwords: active and backup. It supports - 
 
 	1.	Password Generation: Creates initial active and backup passwords.
 	2.	Backup Rotation: Regenerates the backup password when needed.
@@ -19,7 +19,8 @@ Features -
 	•	Idempotent behavior ensures passwords remain unchanged unless explicitly triggered.
 
 
-Folder Structure
+Folder Structure - 
+
 	•	Terraform_random_password_generation/
 		•	_modules/
 			•	password_generation/
@@ -35,9 +36,9 @@ Folder Structure
 	•	run.sh -> Bash script to run the whole flow
 	•	check.py → validates rotation and swap timestamps
 
-⸻
 
-How It Works
+How It Works -
+
 	1.	Initial Creation:
 		•	Both active and backup passwords are generated.
 	2.	Backup Rotation:
@@ -89,11 +90,13 @@ How to Run -
 
 
 Key Features - 
+
 	•	Modular design for password generation
 	•	Python-based precheck guard for validation
 	•	Idempotent execution — no unintended password regeneration
 	•	Conditional deployment logic for flexibility
 	•	Real-world alignment with production Terraform practices
+
 
 
 Real-World Implementation Experience (In my current project) -
