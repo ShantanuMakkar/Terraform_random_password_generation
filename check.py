@@ -5,7 +5,7 @@ def get_ids(file="terraform.tfvars"):
     rotation, swap = "none", "none"
     with open(file) as f:
         for line in f:
-            line = line.split("#")[0].strip()  # remove comments
+            line = line.split("#")[0].strip()  
             if line.startswith("rotation_id"):
                 rotation = line.split("=")[1].strip().strip('"')
             elif line.startswith("swap_id"):
