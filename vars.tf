@@ -3,12 +3,14 @@ variable "password_length" {
   type        = number
 }
 
-variable "rotate_backup" {
-  description = "Set to true to rotate only the backup password"
-  type        = bool
+# Persistent rotation ID (timestamps or strings)
+variable "rotation_id" {
+  type    = string
+  default = "none"
 }
 
-variable "swap_passwords" {
-  description = "Set to true to swap active and backup passwords"
-  type        = bool
+# Persistent swap ID (timestamps or strings)
+variable "swap_id" {
+  type    = string
+  default = "none"
 }

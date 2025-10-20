@@ -1,32 +1,24 @@
 import sys
-import os
+from datetime import datetime
 
-def main():
-    file_path = "terraform.tfvars"
-
-    if not os.path.exists(file_path):
-        print(f" Could not find {file_path}")
-        sys.exit(1)
-
-    rotate_backup = False
-    swap_passwords = False
-
-    # Reading terraform.tfvars 
-    with open(file_path, "r") as f:
+def get_ids(file="terraform.tfvars"):
+    rotation, swap = "none", "none"
+    with open(file) as f:
         for line in f:
-            line = line.strip()
-            if line.startswith("rotate_backup"):
-                rotate_backup = "true" in line.lower()
-            elif line.startswith("swap_passwords"):
-                swap_passwords = "true" in line.lower()
+            line = line.split("#")[0].strip()  # remove comments
+            if line.startswith("rotation_id"):
+                rotation = line.split("=")[1].strip().strip('"')
+            elif line.startswith("swap_id"):
+                swap = line.split("=")[1].strip().strip('"')
+    return rotation, swap
 
-    # Validation check
-    if rotate_backup and swap_passwords:
-        print("Error: You cannot rotate and swap passwords at the same time.")
-        sys.exit(1)
-    else:
-        print("Validation passed. Safe to run terraform apply.")
-        sys.exit(0)
+def to_dt(ts):
+    return None if ts.lower() == "none" else datetime.fromisoformat(ts)
 
-if __name__ == "__main__":
-    main()
+rotation_id, swap_id = get_ids()
+if to_dt(rotation_id) == to_dt(swap_id) and rotation_id.lower() != "none":
+    print("Error: rotation_id and swap_id cannot be the same timestamp!")
+    sys.exit(1)
+
+print("Validation passed. Safe to run terraform apply.")
+sys.exit(0)

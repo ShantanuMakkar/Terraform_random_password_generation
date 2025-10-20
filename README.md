@@ -1,54 +1,67 @@
-Terraform Random Password Generation :
+Terraform Random Password Generation Module :
 
-This project demonstrates how to use Terraform to generate secure random passwords and manage them efficiently using modular structure and conditional deployment techniques.
+Overview - 
 
-The setup includes a Python-based precheck script that validates the environment before deployment, ensuring idempotency and safe provisioning.
-
-
-Folder Structure -
-
-	1.	Terraform_random_password_generation/
-
-	2.	_modules/
-	•	password_generation/
-		•	password.tf
-		•	local.tf
-		•	vars.tf
-		•	outputs.tf
-
-	3.	main.tf
-	4.	vars.tf
-	5.	outputs.tf
-	6.	terraform.tfvars
-
-	7.	check.py
-	8.	run.sh
-
-	9.	README.md
+This Terraform module generates two random passwords: active and backup. It supports:
+	1.	Password Generation: Creates initial active and backup passwords.
+	2.	Backup Rotation: Regenerates the backup password when needed.
+	3.	Password Swapping: Swap active and backup passwords safely.
+	4.	Idempotency: Passwords only change when triggered by rotation or swap events.
+	5.	Conditional Deployment: Can be used in Terraform projects to create resources selectively.
 
 
-Project Overview - 
-	•	The Terraform configuration is organized into a reusable module that handles password generation.
-	•	The password_generation module defines the logic to create random passwords.
-	•	The root main.tf calls this module and controls execution flow.
-	•	A Python precheck script (check.py) runs before Terraform commands to validate that required variables and files exist.
-	•	This ensures idempotency — re-running Terraform will not regenerate passwords unless the inputs change.
+Features -
+	•	Generate passwords with configurable length and special characters.
+	•	Conditional regeneration using rotation_id and swap_id timestamps.
+	•	Precheck validation to prevent rotation and swap at the same time using a Python script.
+	•	Idempotent behavior ensures passwords remain unchanged unless explicitly triggered.
 
 
-Conditional Deployment - 
-	•	Conditional deployment is used to control when and how resources are created based on variable conditions.
-	•	For example, Terraform only generates a password if a flag such as create_password = true is set.
-	•	This approach ensures that repeated runs do not modify existing resources unless explicitly required.
+Folder Structure
+	•	Terraform_random_password_generation/
+		•	_modules/
+			•	password_generation/
+			•	password.tf → main password resources
+			•	local.tf → local values and computed passwords
+			•	vars.tf → input variables
+			•	outputs.tf → output passwords (marked sensitive)
+	•	main.tf → calls the module
+	•	vars.tf → main module variables
+	•	outputs.tf → outputs from main module
+	•	terraform.tfvars → values for testing
+	•	README.md → this file
+	•	run.sh -> Bash script to run the whole flow
+	•	check.py → validates rotation and swap timestamps
+
+⸻
+
+How It Works
+	1.	Initial Creation:
+		•	Both active and backup passwords are generated.
+	2.	Backup Rotation:
+		•	Triggered by changing rotation_id timestamp.
+		•	Only backup password is regenerated; active remains unchanged.
+	3.	Swap Passwords:
+		•	Triggered by changing swap_id timestamp.
+		•	Active and backup passwords are swapped.
+		•	Rotation and swap cannot occur at the same timestamp (precheck Python script ensures this).
+	4.	Idempotency:
+		•	Passwords do not change on subsequent Terraform applies unless the timestamps are updated.
+	5.	Conditional Deployment:
+		•	Can control resource creation using variables.
+		•	Used in real projects for AWS resources like RDS, storing passwords in Secrets Manager.
 
 
 How to Run - 
 
-	1.	Run the precheck to validate setup:
-	•	bash run.sh
+	1.	Run the bash script, it triggers the precheck python script check.py (external tool) to validate the setup and run the terraform commands:
+	•	bash run.sh 
+		or 
+		./run.sh
 	
-	2. Then run.sh will run the check.py script, which will read the terraform.tfvars file to validate the if the two variables are true at the same time.
+	2. The check.py script reads the terraform.tfvars file to validate the if the two variables for backup rotation and swapping are same or not.
 
-	3. If the check.py succeeds, it will run the terraform commands plan & apply as a part of the bash script4
+	3. If the check.py succeeds, it will run the terraform commands plan & apply as a part of the bash script.
 
 	4.	If you want to skip the bonus validation part, directly perform the Terraform commands as below:
 	•	terraform init

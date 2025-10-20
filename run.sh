@@ -1,11 +1,16 @@
 #!/bin/bash
 set -e
 
-echo "Running precheck validation"
+echo "****-------------------------****"
+echo "Starting the process to trigger the external python script to validate if both backup rotation and swap are not being initiated together .."
+echo "Running precheck validations"
 python3 check.py
 
-echo "Running Terraform plan"
+echo "Running Terraform plan.."
 terraform plan
 
-echo "Running Terraform apply"
+echo "Running Terraform apply.."
 terraform apply -auto-approve
+
+echo "****-------------------------****"
+echo "Terraform is successful.."
