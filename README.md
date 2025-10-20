@@ -1,6 +1,3 @@
-NOTE - Please open the README file in code mode (and not in preview mode) in Github for better reading experience. Thanks!
-
-
 Terraform Random Password Generation Module : 
 
 This Terraform module generates two random passwords: active and backup. It supports - 
