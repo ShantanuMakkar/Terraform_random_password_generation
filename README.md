@@ -14,7 +14,7 @@ Features -
 	•	Generate passwords with configurable length and special characters.
 	•	Conditional regeneration using rotation_id and swap_id timestamps.
 	•	These timestamps can be dynamically supplied via GitLab CI pipeline variables, so that when we trigger a pipeline run the module receives the current or desired timestamp. 
-	•    This allows us to integrate password rotation/swap as part of a CI/CD workflow in real-time, while ensuring idempotency and enforcing constraints like preventing simultaneous rotation and swap.
+	•   This allows us to integrate password rotation/swap as part of a CI/CD workflow in real-time, while ensuring idempotency and enforcing constraints like preventing simultaneous rotation and swap.
 	•	Precheck validation to prevent rotation and swap at the same time using a Python script.
 	•	Idempotent behavior ensures passwords remain unchanged unless explicitly triggered.
 
