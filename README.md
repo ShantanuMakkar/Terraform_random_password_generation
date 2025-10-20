@@ -13,6 +13,7 @@ This Terraform module generates two random passwords: active and backup. It supp
 
 
 Features -
+
 	•	Generate passwords with configurable length and special characters.
 	•	Conditional regeneration using rotation_id and swap_id timestamps.
 	•	Precheck validation to prevent rotation and swap at the same time using a Python script.
@@ -101,8 +102,6 @@ Key Features -
 
 Real-World Implementation Experience (In my current project) -
 
-In my current project, I have extensively used conditional deployment across almost all AWS resources in Terraform.
-This ensures efficient and controlled deployments — for instance, creating RDS instances, S3 buckets, or IAM roles only when specific feature flags are enabled.
+	• In my current project, I have extensively used conditional deployment across almost all AWS resources in Terraform. This ensures efficient and controlled deployments — for instance, creating RDS instances, S3 buckets, or IAM roles only when specific feature flags are enabled.
 
-I also implemented random password generation for RDS databases using the same concept as this module.
-The generated passwords were securely stored directly in AWS Secrets Manager using a key pair, ensuring both security and automation without exposing credentials in plain text.
+	• I also implemented random password generation for RDS databases using the same concept as this module. The generated passwords were securely stored directly in AWS Secrets Manager using a key pair, ensuring both security and automation without exposing credentials in plain text.
