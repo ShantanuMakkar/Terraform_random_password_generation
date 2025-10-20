@@ -1,8 +1,10 @@
-Terraform Random Password Generation Module :
+NOTE - Please open the README file in code mode (and not in preview mode) in Github for better experience reading. Thanks!
 
-Overview - 
+
+Terraform Random Password Generation Module : 
 
 This Terraform module generates two random passwords: active and backup. It supports:
+
 	1.	Password Generation: Creates initial active and backup passwords.
 	2.	Backup Rotation: Regenerates the backup password when needed.
 	3.	Password Swapping: Swap active and backup passwords safely.
@@ -55,18 +57,35 @@ How It Works
 How to Run - 
 
 	1.	Run the bash script, it triggers the precheck python script check.py (external tool) to validate the setup and run the terraform commands:
-	•	bash run.sh 
-		or 
-		./run.sh
+		•	bash run.sh 
+			or 
+			./run.sh
+
+	2. The initial terraform.tfvars contains the below values, this initiates both the random and backup passwords.
+	rotation_id     = "none" 
+	swap_id         = "none" 
+
+	3. Change the values by adding a timestamp as below 
+	rotation_id     = "2025-10-20T21:15:00+05:30" --> This changes the backup password.
+	swap_id         = "none"
+
+	or,
+	rotation_id     = "2025-10-20T21:15:00+05:30" 
+	swap_id         = "2025-10-20T21:30:00+05:30" --> This swaps the active and backup passwords.
+
+	or,
+	rotation_id     = "2025-10-20T21:15:00+05:30" --> Same values, python script validation stops the execution.
+	swap_id         = "2025-10-20T21:15:00+05:30" --> Same values, python script validation stops the execution.
+
 	
-	2. The check.py script reads the terraform.tfvars file to validate the if the two variables for backup rotation and swapping are same or not.
+	4. The check.py script reads the terraform.tfvars file to validate the if the two variables for backup rotation and swapping are same or not.
 
-	3. If the check.py succeeds, it will run the terraform commands plan & apply as a part of the bash script.
+	5. If the check.py succeeds, it will run the terraform commands plan & apply as a part of the bash script.
 
-	4.	If you want to skip the bonus validation part, directly perform the Terraform commands as below:
-	•	terraform init
-	•	terraform plan
-	•	terraform apply
+	6.	If you want to skip the bonus validation part, directly perform the Terraform commands as below:
+		•	terraform init
+		•	terraform plan
+		•	terraform apply
 
 
 Key Features - 
